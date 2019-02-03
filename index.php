@@ -6,7 +6,7 @@
 
 <div class="bg-amarillo contenedor sombra">
     <form id="contacto" action="#">
-        <legend>Añada un contacto <Span>Todos los campos son obligatorios</Span></legend>
+        <legend>Añada un contacto <span>Todos los campos son obligatorios</span></legend>
 
         <div class="campos">
 
@@ -28,14 +28,14 @@
             <div class="campo">
                 <!-- Lo que hace el atributo "for", es que si le damos Click al label, va a seleccionar el elemento con el Id con el mismo nombre -->
                 <label for="telefono">Teléfono:</label>
-                <input type="text" placeholder="Teléfono Contacto" id="telefono">
+                <input type="tel" placeholder="Teléfono Contacto" id="telefono">
             </div><!-- campo -->
-
-            <div class="campo enviar">
-                <input type="submit" value="Añadir">
-            </div>
             
         </div><!-- campos -->
+
+        <div class="campo enviar">
+            <input type="submit" value="Añadir">
+        </div>
         
     </form>
 </div> <!-- bg-amarillo contenedor sombra -->
