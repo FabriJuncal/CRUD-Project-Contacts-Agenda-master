@@ -65,7 +65,7 @@
                         <td>Udemy</td>
                         <td>3764154511</td>
                         <td>
-                            <a href="#" class="btn-editar btn">
+                            <a href="editar.php?id=1" class="btn-editar btn">
                                 <i class="fas fa-pen-square"></i>
                             </a>
 
@@ -81,7 +81,7 @@
                         <td>Udemy</td>
                         <td>3764154511</td>
                         <td>
-                            <a href="#" class="btn-editar btn">
+                            <a href="editar.php?id=1" class="btn-editar btn">
                                 <i class="fas fa-pen-square"></i>
                             </a>
 
@@ -97,7 +97,7 @@
                         <td>Udemy</td>
                         <td>3764154511</td>
                         <td>
-                            <a href="#" class="btn-editar btn">
+                            <a href="editar.php?id=1" class="btn-editar btn">
                                 <i class="fas fa-pen-square"></i>
                             </a>
 
