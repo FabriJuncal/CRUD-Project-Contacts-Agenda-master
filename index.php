@@ -9,10 +9,6 @@
         <legend>Añada un contacto <span>Todos los campos son obligatorios</span></legend>
 
         <?php include 'inc/layout/formulario.php'; ?>
-
-        <div class="campo enviar">
-            <input type="submit" value="Añadir">
-        </div>
         
     </form>
 </div> <!-- bg-amarillo contenedor sombra -->
