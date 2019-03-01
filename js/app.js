@@ -4,7 +4,7 @@ eventListeners();
 
 function eventListeners(){
 
-    // Cuando el formulario de Crear o Editar se ejecuta
+    // Cuando el BOTON de Crear o Editar se ejecuta
     formularioContactos.addEventListener('submit', leerFormulario);
 }
 
@@ -14,13 +14,14 @@ function leerFormulario(e){
     //Leer los datos de los inputs
     const nombre = document.querySelector('#nombre').value,
           empresa = document.querySelector('#empresa').value,
-          telefono = document.querySelector('#telefono').value;
+          telefono = document.querySelector('#telefono').value,
+          accion = document.querySelector('#accion').value;
     
     if(nombre === '' || empresa === '' || telefono === ''){
         // 2 parametros: texto y clase
         mostrarNotificacion('Todos los Campos son Obligatorios', 'error'); 
     }else{
-        // Pasa la validacion, crear llamado a Ajax
+        // Si pasa la validacion, se crea el llamado a Ajax
         // FomrData(): Los objetos FormData le permiten compilar un conjunto de pares clave/valor para enviar mediante XMLHttpRequest. Están destinados principalmente para el envío de los datos del formulario, pero se pueden utilizar de forma independiente con el fin de transmitir los datos tecleados.
         const infoContacto = new FormData();
         infoContacto.append('nombre', nombre);
@@ -33,6 +34,13 @@ function leerFormulario(e){
         // console.log(infoContacto[0], infoContacto[1], infoContacto[2],infoContacto[3])
 
         // console.log(...infoContacto);
+
+        if(accion === 'crear'){
+            //Crearemos un nuevo contacto
+            insertarBD(infoContacto);
+        }else{
+            //Editamos el contacto
+        }
     }
 }
 
@@ -51,13 +59,14 @@ function insertarBD(datos){
 
     // 4)Pasar los datos
         xhr.onload = function(){
+            // status = 200 significa que todo esta correcto, por lo tanto creamos una condicional que ejecute el codigo si todo salio bien
             if(this.status === 200){
                 // leemos la respuesta de PHP
                 // Utilizamos "JSON.parse" para poder transformar los datos que obtenemos del servidor que estan en formato string a JSON
                 console.log(JSON.parse(xhr.responseText));
                 
-                const respuesta = JSON.parce( xhr.responseText);
-                console.log(respuesta)
+                const respuesta = JSON.parse( xhr.responseText);
+                console.log(respuesta.empresa);
             }
         }
     // 5)Enviar los datos
