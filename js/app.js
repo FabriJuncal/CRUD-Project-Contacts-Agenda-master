@@ -65,7 +65,7 @@ function insertarBD(datos){
                 // Utilizamos "JSON.parse" para poder transformar los datos que obtenemos del servidor que estan en formato string a JSON
                 console.log(JSON.parse(xhr.responseText));
                 
-                const respuesta = JSON.parse( xhr.responseText);
+                const respuesta = JSON.parse( xhr.responseText); 
                 console.log(respuesta.empresa);
             }
         }
