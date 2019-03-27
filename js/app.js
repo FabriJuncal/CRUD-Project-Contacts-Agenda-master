@@ -1,4 +1,5 @@
-const formularioContactos = document.querySelector('#contacto');
+const formularioContactos = document.querySelector('#contacto'),
+      listadoContactos = document.querySelector('#listado-contactos tbody');
 
 eventListeners();
 
@@ -63,10 +64,69 @@ function insertarBD(datos){
             if(this.status === 200){
                 // leemos la respuesta de PHP
                 // Utilizamos "JSON.parse" para poder transformar los datos que obtenemos del servidor que estan en formato string a JSON
-                console.log(JSON.parse(xhr.responseText));
+                // console.log(JSON.parse(xhr.responseText));
                 
                 const respuesta = JSON.parse( xhr.responseText); 
-                console.log(respuesta.empresa);
+                
+
+                /**  Creamos nodos HTML con Scripting por que: **/
+                // El SANEAMIENTO se hace automaticamente.
+                // Se CARGAN MAS RAPIDO.
+                // Es mas SEGURO
+
+                // Insertamos un nuevo elemento a la Tabla
+                const  nuevoContacto = document.createElement('tr');
+
+                nuevoContacto.innerHTML = `
+                    <td>${respuesta.datos.nombre}</td>
+                    <td>${respuesta.datos.empresa}</td>
+                    <td>${respuesta.datos.telefono}</td>
+
+                `
+                // Creamos el  contenedor  para los botones
+                const  contenedorAcciones = document.createElement('td');   
+
+                /** Creamos el ICONO DE EDITAR **/
+                const iconoEditar =  document.createElement('i');
+                iconoEditar.classList.add('fas', 'fa-pen-square');
+
+                // Creamos el ENLACE para editar
+                const btnEditar = document.createElement('a');
+                btnEditar.appendChild(iconoEditar);
+                btnEditar.href = `editar.php?id=${respuesta.datos.id_insertado}`; //Forma 1 de agragar atributos al nodo
+                btnEditar.classList.add('btn-editar', 'btn');
+
+                // Agregamos el nodo al padre
+                contenedorAcciones.appendChild(btnEditar);
+
+                /** Creamos el ICONO DE ELIMINAR **/
+                const iconoEliminar  =  document.createElement('i');
+                iconoEliminar.classList.add('fas', 'fa-trash-alt');
+
+                // Creamos el BOTON para eliminar
+                const btnEliminar = document.createElement('button');
+               
+                btnEliminar.appendChild(iconoEliminar);
+                btnEliminar.setAttribute('data-id', respuesta.datos.id_insertado); //Forma 2 de agragar atributos al nodo
+                btnEliminar.classList.add('btn', 'btn-borrar')
+
+                // Agregamos el nodo al padre
+                contenedorAcciones.appendChild(btnEliminar);
+
+                
+                /** Agregamos los dos nodos HTML creados al <tr> **/
+                nuevoContacto.appendChild(contenedorAcciones);
+                
+                /** Agregamos el contacto a la Lista de Contactos **/
+                listadoContactos.appendChild(nuevoContacto);
+
+                // Reseteamos el Formulario
+                document.querySelector('form').reset();
+
+                // Mostramos la notificacion de Registro Creado
+                mostrarNotificacion('Contacto Creado Correctamente', 'correcto');
+
+
             }
         }
     // 5)Enviar los datos
