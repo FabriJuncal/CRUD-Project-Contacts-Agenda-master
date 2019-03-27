@@ -15,8 +15,13 @@ define('BD_USUARIO','root');
 define('BD_PASSWORD','');
 define('BD_NOMBRE','agendaphp');
 
+// Los parametros deben ir en esta secuencia: el 5to parametro es opcional (puerto).
+// mysqli(HOST, USUARIO, CONTRASEÑA, NOMBRE DE LA BASE DE DATOS, PUERTO)
 $conn = new mysqli(BD_HOST, BD_USUARIO, BD_PASSWORD, BD_NOMBRE);
-    
+ 
+// ping(): Nos muestra dos posibles valores:
+// 1: Significa que se realizo la conexion con la base de datos.
+// 0 o (nada): Significa que no se puedo establecer la conexion con la base de datos.
 echo $conn->ping();
 
 
