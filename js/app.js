@@ -45,7 +45,7 @@ function leerFormulario(e){
     }
 }
 
-/** Inserta en la base de datos via Ajax **/
+/** Insercion en la base de datos via Ajax **/
 function insertarBD(datos){
     // 1)Llamado a Ajax
 

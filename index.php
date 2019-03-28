@@ -1,4 +1,7 @@
-<?php include 'inc/layout/header.php'; ?>
+<?php
+    include 'inc/funciones/funciones.php';
+    include 'inc/layout/header.php';
+?>
 
 <div class="contenedor-barra">
     <h1>Agenda de Contactos</h1>
@@ -33,53 +36,32 @@
                 </thead>
 
                 <tbody>
-                    <tr>
-                        <td>Fabricio</td>
-                        <td>Udemy</td>
-                        <td>3764154511</td>
-                        <td>
-                            <a href="editar.php?id=1" class="btn-editar btn">
-                                <i class="fas fa-pen-square"></i>
-                            </a>
 
-                            <!-- "data-id" es un atributo personalisado, es una nueva caracteristica de HTML, agragando data-[nombre], creamos el atributo personalisado -->
-                            <button data-id="1" type="button" class="btn-borrar btn">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        </td>
-                    </tr>
+                    <?php
+                        $contactos = obtenerContactos();
+                            if($contactos->num_rows){  
 
-                    <tr>
-                        <td>Fabricio</td>
-                        <td>Udemy</td>
-                        <td>3764154511</td>
-                        <td>
-                            <a href="editar.php?id=1" class="btn-editar btn">
-                                <i class="fas fa-pen-square"></i>
-                            </a>
+                            foreach($contactos as $contacto){ ?>
 
-                            <!-- "data-id" es un atributo personalisado, es una nueva caracteristica de HTML, agragando data-[nombre], creamos el atributo personalisado -->
-                            <button data-id="1" type="button" class="btn-borrar btn">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        </td>
-                    </tr>
+                              
+                            <tr>
+                                <td><?php echo $contacto['nombre'] ?></td>
+                                <td><?php echo $contacto['empresa'] ?></td>
+                                <td><?php echo $contacto['telefono'] ?></td>
+                                <td>
+                                    <a href="editar.php?id=<?php echo $contacto['id'] ?>" class="btn-editar btn">
+                                        <i class="fas fa-pen-square"></i>
+                                    </a>
 
-                    <tr>
-                        <td>Fabricio</td>
-                        <td>Udemy</td>
-                        <td>3764154511</td>
-                        <td>
-                            <a href="editar.php?id=1" class="btn-editar btn">
-                                <i class="fas fa-pen-square"></i>
-                            </a>
+                                    <!-- "data-id" es un atributo personalisado, es una nueva caracteristica de HTML, agragando data-[nombre], creamos el atributo personalisado -->
+                                    <button data-id="<?php echo $contacto['id'] ?>" type="button" class="btn-borrar btn">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </td>
+                            </tr>
 
-                            <!-- "data-id" es un atributo personalisado, es una nueva caracteristica de HTML, agragando data-[nombre], creamos el atributo personalisado -->
-                            <button data-id="1" type="button" class="btn-borrar btn">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        </td>
-                    </tr>
+                        <?php  } 
+                    } ?>                
                 </tbody>
             
             </table>
