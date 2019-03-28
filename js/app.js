@@ -7,6 +7,9 @@ function eventListeners(){
 
     // Cuando el BOTON de Crear o Editar se ejecuta
     formularioContactos.addEventListener('submit', leerFormulario);
+
+    // Evento para Eliminar Registro
+    listadoContactos.addEventListener('click', eliminarContacto);
 }
 
 function leerFormulario(e){
@@ -45,7 +48,7 @@ function leerFormulario(e){
     }
 }
 
-/** Insercion en la base de datos via Ajax **/
+/** Insercion de Registros via Ajax **/
 function insertarBD(datos){
     // 1)Llamado a Ajax
 
@@ -136,6 +139,44 @@ function insertarBD(datos){
 
 }
 
+// Eliminacion de Registros
+function eliminarContacto(e){ // El parametro "e", nos reportará a que elemento se le dio Click
+    // Creamos una condicional para saber si se hizo click en el elemento esperamos
+    // e: Contiene el dato del nodo seleccionado
+    // .target: Nos mostrará el nodo seleccionado
+    // .parentElement: Nos mostrará el padre del nodo seleccionado
+    // .classList: Nos referimos a las clases que contiene el nodo seleccionado
+    // .contains: Devuelve TRUE si la clase que pasamos como parametro se encuentra en el nodo seleccionado, y retornará FALSE si no se encuentra
+    if(e.target.parentElement.classList.contains('btn-borrar')){
+        // Tomamos el ID
+        //.getAttribute: Nos devuelve el valor del atributo del nodo seleccionado.
+        const id = e.target.parentElement.getAttribute('data-id');
+        
+        // Pregunta al usuario
+        const respuesta = confirm('Estas Seguro/a ?');
+
+        if(respuesta){
+            //1)Llamado a AJAX
+
+            //2)Creamos el objeto
+                const xhr = new XMLHttpRequest();
+
+            //3)Abrimos la conexion
+                xhr.open('GET', `inc/modelos/modelo-contactos.php?id=${id}&accion=borrar`, true);
+
+            //4)Leemos la respuesta
+                xhr.onload = function(){
+                    if(this.status === 200){
+                        const resultado = JSON.parse(xhr.responseText);
+
+                        console.log(resultado);
+                    }
+                }
+            //5)Enviamos la peticion
+                xhr.send();
+        }
+    }
+}
 
 
 //Notificacion en pantalla

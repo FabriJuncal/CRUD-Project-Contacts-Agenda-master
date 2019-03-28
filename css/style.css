@@ -58,6 +58,10 @@ body{
     color: var(--primario);
 }
 
+.btn:hover{
+    cursor: pointer;
+}
+
 .volver{
     background-color: var(--secundario);
     border-radius: 5px;
