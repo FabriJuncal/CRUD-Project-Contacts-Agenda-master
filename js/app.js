@@ -5,11 +5,14 @@ eventListeners();
 
 function eventListeners(){
 
-    // Cuando el BOTON de Crear o Editar se ejecuta
+    // Evento para Modificar Registro
     formularioContactos.addEventListener('submit', leerFormulario);
 
-    // Evento para Eliminar Registro
-    listadoContactos.addEventListener('click', eliminarContacto);
+    if(listadoContactos){
+        // Evento para Eliminar Registro
+        listadoContactos.addEventListener('click', eliminarContacto);
+    }
+    
 }
 
 function leerFormulario(e){
@@ -47,8 +50,9 @@ function leerFormulario(e){
         }
     }
 }
+//-----------------------------------------------------------------------------------------------------------------------------------
+/** INSERCION DE REGISTROS VIA AJAX **/
 
-/** Insercion de Registros via Ajax **/
 function insertarBD(datos){
     // 1)Llamado a Ajax
 
@@ -138,8 +142,8 @@ function insertarBD(datos){
 
 
 }
-
-// Eliminacion de Registros
+//-----------------------------------------------------------------------------------------------------------------------------------
+/* ELIMINACION DE REGISTROS VIA AJAX */
 function eliminarContacto(e){ // El parametro "e", nos reportará a que elemento se le dio Click
     // Creamos una condicional para saber si se hizo click en el elemento esperamos
     // e: Contiene el dato del nodo seleccionado
@@ -169,7 +173,11 @@ function eliminarContacto(e){ // El parametro "e", nos reportará a que elemento
                     if(this.status === 200){
                         const resultado = JSON.parse(xhr.responseText);
 
-                        console.log(resultado);
+                        if(resultado.respuesta == 'correcto'){
+                            //Eliminar el registro del DOM
+                            console.log(e.target.parentElement.parentElement.parentElement);
+                            e.target.parentElement.parentElement.parentElement.remove();
+                        }
                     }
                 }
             //5)Enviamos la peticion
@@ -177,9 +185,9 @@ function eliminarContacto(e){ // El parametro "e", nos reportará a que elemento
         }
     }
 }
+//-----------------------------------------------------------------------------------------------------------------------------------
 
-
-//Notificacion en pantalla
+/* NOTIFICACION EN PANTALLA */
 function mostrarNotificacion(mensaje,clase){
     // Creamos el nodo
     const notificacion = document.createElement('div');
@@ -210,3 +218,4 @@ function mostrarNotificacion(mensaje,clase){
 
     },100)
 }
+//-----------------------------------------------------------------------------------------------------------------------------------
