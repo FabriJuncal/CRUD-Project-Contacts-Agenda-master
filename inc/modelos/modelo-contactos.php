@@ -53,8 +53,6 @@ if(isset($_POST['accion'])){
             );
         } 
 
-        // Con "json_encode" enviamos los datos en formato JSON
-        echo json_encode($respuesta);
     
     }else if($_POST['accion'] == 'editar'){
         // Siempre que utilicemos AJAX es recomendable utilizar "echo jsdon_encode()" para saber que estamos retornando
@@ -95,6 +93,7 @@ if(isset($_POST['accion'])){
         }
     }
 
+    // Con "json_encode" enviamos los datos en formato JSON
     echo json_encode($respuesta);  
 } 
 

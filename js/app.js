@@ -15,8 +15,11 @@ function eventListeners(){
         listadoContactos.addEventListener('click', eliminarContacto); // click: cuando se presiona en un elemento
     }
 
-    // Buscar
+    // Buscardor
     inputBuscador.addEventListener('input', buscarContactos);
+
+    // Contador
+    numeroContactos();
     
 }
 
@@ -144,7 +147,8 @@ function insertarBD(datos){
                 // Mostramos la notificacion de Registro Creado
                 mostrarNotificacion('Contacto Creado Correctamente', 'correcto');
 
-
+                // Actualizamos el Contador de Registros
+                numeroContactos();
             }
         }
     // 5)Enviar los datos
@@ -232,10 +236,14 @@ function eliminarContacto(e){ // El parametro "e", nos reportará a que elemento
                             e.target.parentElement.parentElement.parentElement.remove();
 
                             //Mostrar notificacion
-                            mostrarNotificacion('Contacto eliminado', 'correcto')
+                            mostrarNotificacion('Contacto eliminado', 'correcto');
+
+                            // Actualizamos el Contador de Registros
+                            numeroContactos();
+
                         }else{
                             //Mostrar notificacion
-                            mostrarNotificacion('Hubo un error.....', 'error')
+                            mostrarNotificacion('Hubo un error.....', 'error');
                         }
                     }
                 }
@@ -254,13 +262,35 @@ function buscarContactos(e){  // El parametro "e", nos reportará a que elemento
 
           registros.forEach(registro => {
               registro.style.display = 'none';
-              console.log(registro.childNodes[1].textContent.replace(/\s/g, " ").search(expresion));
+            //   console.log(registro.childNodes[1].textContent.replace(/\s/g, " ").search(expresion));
 
               if(registro.childNodes[1].textContent.replace(/\s/g, " ").search(expresion) != -1 ){
                   registro.style.display = 'table-row';
               }
+
+              // Actualizamos el Contador de Registros
+              numeroContactos();
           })
     
+}
+
+//-----------------------------------------------------------------------------------------------------------------------------------
+/* CONTADOR DE REGISTROS */
+
+function numeroContactos(){
+    const totalContactos = document.querySelectorAll('tbody tr'),
+          contenedorNumero = document.querySelector('.total-contactos span');
+
+    let total = 0;
+
+    totalContactos.forEach(contacto =>{
+        if(contacto.style.display === '' || contacto.style.display === 'table-row'){
+            total++;
+        }
+    });
+
+    contenedorNumero.textContent = total;
+
 }
 
 //-----------------------------------------------------------------------------------------------------------------------------------
