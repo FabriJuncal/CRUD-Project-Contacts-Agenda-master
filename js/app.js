@@ -1,17 +1,22 @@
 const formularioContactos = document.querySelector('#contacto'),
-      listadoContactos = document.querySelector('#listado-contactos tbody');
+      listadoContactos = document.querySelector('#listado-contactos tbody'),
+      inputBuscador = document.querySelector('#buscar');
+
 
 eventListeners();
 
 function eventListeners(){
 
     // Evento para Modificar Registro
-    formularioContactos.addEventListener('submit', leerFormulario);
+    formularioContactos.addEventListener('submit', leerFormulario); // submit: para enviar un formulario
 
     if(listadoContactos){
         // Evento para Eliminar Registro
-        listadoContactos.addEventListener('click', eliminarContacto);
+        listadoContactos.addEventListener('click', eliminarContacto); // click: cuando se presiona en un elemento
     }
+
+    // Buscar
+    inputBuscador.addEventListener('input', buscarContactos);
     
 }
 
@@ -55,6 +60,7 @@ function leerFormulario(e){
         }
     }
 }
+
 //-----------------------------------------------------------------------------------------------------------------------------------
 /** INSERCION DE REGISTROS VIA AJAX **/
 
@@ -151,7 +157,7 @@ function insertarBD(datos){
 //-----------------------------------------------------------------------------------------------------------------------------------
 /** MODIFICACION DE REGISTROS VIA AJAX **/
 
-function actualizarRegistro(datos){
+function actualizarRegistro(datos){ 
     // Si queremos ver lo que contiene el parametro "datos" no podemos solo utilizar la funcion "console.log()", tenemos que utilizarlo con el Operador de Propagación, o spread operator, se compone del nombre de nuestro array precedido por tres puntos.
     // console.log(...datos);
 
@@ -191,6 +197,7 @@ function actualizarRegistro(datos){
 
 //-----------------------------------------------------------------------------------------------------------------------------------
 /* ELIMINACION DE REGISTROS VIA AJAX */
+
 function eliminarContacto(e){ // El parametro "e", nos reportará a que elemento se le dio Click
     // Creamos una condicional para saber si se hizo click en el elemento esperamos
     // e: Contiene el dato del nodo seleccionado
@@ -237,9 +244,28 @@ function eliminarContacto(e){ // El parametro "e", nos reportará a que elemento
         }
     }
 }
-//-----------------------------------------------------------------------------------------------------------------------------------
 
+//-----------------------------------------------------------------------------------------------------------------------------------
+/* BUSQUEDA DE REGISTROS VIA AJAX */
+
+function buscarContactos(e){  // El parametro "e", nos reportará a que elemento se le dio Click
+    const expresion = new RegExp(e.target.value, 'i'),
+          registros = document.querySelectorAll('tbody tr');
+
+          registros.forEach(registro => {
+              registro.style.display = 'none';
+              console.log(registro.childNodes[1].textContent.replace(/\s/g, " ").search(expresion));
+
+              if(registro.childNodes[1].textContent.replace(/\s/g, " ").search(expresion) != -1 ){
+                  registro.style.display = 'table-row';
+              }
+          })
+    
+}
+
+//-----------------------------------------------------------------------------------------------------------------------------------
 /* NOTIFICACION EN PANTALLA */
+
 function mostrarNotificacion(mensaje,clase){
     // Creamos el nodo
     const notificacion = document.createElement('div');
