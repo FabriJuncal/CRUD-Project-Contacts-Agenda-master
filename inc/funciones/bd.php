@@ -1,5 +1,7 @@
 <?php
 
+/*CONEXION A LA BASE DE DATOS*/
+
 // La función define () define una constante.
 
 // Las constantes son muy parecidas a las variables, excepto por las siguientes diferencias:

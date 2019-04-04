@@ -1,11 +1,13 @@
 <?php
+/*AQUI VAN TODAS LAS FUNCIONES QUE RETORNARÁN UN VALOR POR VIA AJAX*/
+
 
 // isset: Verifica que se exista la variable
 
 // Utilizamos la funcion "isset" para que no genere un error por que se esta condicionando una variable que no existe aun.
 if(isset($_POST['accion'])){
-    // INSERTAMOS un registro
-    if($_POST['accion'] == 'crear'){
+    
+    if($_POST['accion'] == 'crear'){ // INSERTAMOS un registro
 
         // Hacemos la conexion a la base de datos
         require_once('../funciones/bd.php');
@@ -17,7 +19,7 @@ if(isset($_POST['accion'])){
 
         
         try {
-            // Validamos los datos insertados en el metodo PREPARED STATEMENTS
+            // Validamos los datos insertados con el metodo PREPARED STATEMENTS
             // Preparamos la plantilla de Insersion
             $stmt = $conn->prepare("
 
@@ -30,6 +32,7 @@ if(isset($_POST['accion'])){
             // Ejecutamos la consulta
             $stmt->execute();
 
+            // affected_rows: Nos devuelve la cantidad de columnas afectadas
             if($stmt->affected_rows == 1){
                 $respuesta = array(
                     'respuesta' => 'correcto',
@@ -54,7 +57,8 @@ if(isset($_POST['accion'])){
         } 
 
     
-    }else if($_POST['accion'] == 'editar'){
+    }else if($_POST['accion'] == 'editar'){ // EDITAMOS un Registro
+
         // Siempre que utilicemos AJAX es recomendable utilizar "echo jsdon_encode()" para saber que estamos retornando
         // echo json_encode($_POST);    
 
@@ -68,10 +72,14 @@ if(isset($_POST['accion'])){
         $id = filter_var($_POST['id'], FILTER_SANITIZE_NUMBER_INT);
 
         try {
+            // Validamos los datos ha ser actualizados con el metodo PREPARED STATEMENTS
+            // Preparamos la plantilla de Actualizacion
+
             $stmt = $conn->prepare("UPDATE contactos SET nombre = ?, telefono = ?, empresa = ? WHERE id = ?");
             $stmt->bind_param("sssi", $nombre, $telefono, $empresa, $id);
             $stmt->execute();
 
+            // affected_rows: Nos devuelve la cantidad de columnas afectadas
             if($stmt->affected_rows == 1){
                 $respuesta = array(
                     'respuesta' => 'correcto'
@@ -82,6 +90,7 @@ if(isset($_POST['accion'])){
                 );
             }
 
+            // Cerramos las conexiones
             $stmt->close();
             $conn->close();
 
@@ -98,24 +107,31 @@ if(isset($_POST['accion'])){
 } 
 
 if(isset($_GET['accion'])){
-    // ELIMINAMOS un registro
-    if($_GET['accion'] == 'borrar'){
+    
+    if($_GET['accion'] == 'borrar'){ // ELIMINAMOS un registro
 
         // Hacemos la conexion a la base de datos
         require_once('../funciones/bd.php');
         
+         // Validamos la entrada agregandole un FILTRO DE SANEAMIENTO
         $id = filter_var($_GET['id'], FILTER_SANITIZE_NUMBER_INT);
 
         try{
+            // Validamos los datos ha ser eliminados con el metodo PREPARED STATEMENTS
+            // Preparamos la plantilla de Eliminacion
+
             $stmt = $conn->prepare("DELETE FROM contactos WHERE id = ?");
             $stmt->bind_param("i", $id);
             $stmt->execute();
 
+            // affected_rows: Nos devuelve la cantidad de columnas afectadas
             if($stmt->affected_rows == 1){
                 $respuesta = array(
                     'respuesta' => 'correcto'
                 );
             }
+
+            // Cerramos las conexiones
             $stmt->close();
             $conn->close();
 
@@ -124,6 +140,8 @@ if(isset($_GET['accion'])){
                 'error' => $e->getMessage()
             );
         }
+
+        // Con "json_encode" enviamos los datos en formato JSON
         echo json_encode($respuesta);
     }
 }

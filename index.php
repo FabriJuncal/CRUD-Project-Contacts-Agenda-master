@@ -1,5 +1,8 @@
 <?php
+    // Importamos funciones para obtener registros de la BASE DE DATOS
     include 'inc/funciones/funciones.php';
+
+    // Importamos el HEADER
     include 'inc/layout/header.php';
 ?>
 
@@ -70,4 +73,5 @@
 </div> <!-- bg-blanco contenedor sombra contactos -->
 
 
+<!-- Importamos el FOOTER -->
 <?php include 'inc/layout/footer.php'; ?>

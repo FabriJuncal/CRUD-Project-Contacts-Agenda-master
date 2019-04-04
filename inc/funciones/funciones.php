@@ -1,5 +1,6 @@
 <?php
 
+    // Obtenemos todos los registros
     function obtenerContactos(){
         include 'bd.php';
 
@@ -15,6 +16,7 @@
         }
     }
 
+    // Obtenemos el registro con el ID que se paso como parametro
     function obtenerContacto($id){
         include 'bd.php';
 

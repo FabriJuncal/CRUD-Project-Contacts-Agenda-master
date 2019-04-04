@@ -5,6 +5,8 @@ const formularioContactos = document.querySelector('#contacto'),
 
 eventListeners();
 
+//-----------------------------------------------------------------------------------------------------------------------------------
+/** EVENTOS CON SUS FUNCIONES **/
 function eventListeners(){
 
     // Evento para Modificar Registro
@@ -15,18 +17,21 @@ function eventListeners(){
         listadoContactos.addEventListener('click', eliminarContacto); // click: cuando se presiona en un elemento
     }
 
-    // Buscardor
-    inputBuscador.addEventListener('input', buscarContactos);
+    // Evento Buscar Registro
+    inputBuscador.addEventListener('input', buscarContactos); // input: cuando se ingresa un caracter en una caja de texto
 
     // Contador
     numeroContactos();
     
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------------
+/** LEEMOS LOS DATOS DEL FORMULARIO y EJECUTAMOS LAS FUNCIONES DE INSERTAR/ACTUALIZAR **/
+
 function leerFormulario(e){
     e.preventDefault();
     
-    //Leer los datos de los inputs
+    //Leemos los datos de los inputs
     const nombre = document.querySelector('#nombre').value,
           empresa = document.querySelector('#empresa').value,
           telefono = document.querySelector('#telefono').value,
@@ -54,8 +59,8 @@ function leerFormulario(e){
             //Creamos un nuevo contacto
             insertarBD(infoContacto);
         }else{
+
             //Editamos el contacto
-            
             const idRegistro = document.querySelector('#id').value;
             infoContacto.append('id', idRegistro);
             actualizarRegistro(infoContacto);
@@ -86,7 +91,6 @@ function insertarBD(datos){
                 // leemos la respuesta de PHP
                 // Utilizamos "JSON.parse" para poder transformar los datos que obtenemos del servidor que estan en formato string a JSON
                 // console.log(JSON.parse(xhr.responseText));
-                
                 const respuesta = JSON.parse( xhr.responseText); 
                 
 
@@ -98,6 +102,7 @@ function insertarBD(datos){
                 // Insertamos un nuevo elemento a la Tabla
                 const  nuevoContacto = document.createElement('tr');
 
+                // Con las comillas invertidas `` podemos agregar variables con codigo de JavaScript
                 nuevoContacto.innerHTML = `
                     <td>${respuesta.datos.nombre}</td>
                     <td>${respuesta.datos.empresa}</td>
@@ -178,6 +183,9 @@ function actualizarRegistro(datos){
     // 4)Pasar los datos
     xhr.onload = function(){
         if(this.status === 200){
+            // leemos la respuesta de PHP
+            // Utilizamos "JSON.parse" para poder transformar los datos que obtenemos del servidor que estan en formato string a JSON
+            // console.log(JSON.parse(xhr.responseText));
             const respuesta = JSON.parse(xhr.responseText);
 
             if(respuesta.respuesta === 'correcto'){
@@ -229,10 +237,16 @@ function eliminarContacto(e){ // El parametro "e", nos reportará a que elemento
             //4)Leemos la respuesta
                 xhr.onload = function(){
                     if(this.status === 200){
+                        // leemos la respuesta de PHP
+                        // Utilizamos "JSON.parse" para poder transformar los datos que obtenemos del servidor que estan en formato string a JSON
+                        // console.log(JSON.parse(xhr.responseText));
                         const resultado = JSON.parse(xhr.responseText);
 
                         if(resultado.respuesta == 'correcto'){
                             //Eliminar el registro del DOM
+                            // e: El nodo al que nos referimos.
+                            // target: Nos muestra el nodo al que nos referimos.
+                            // parentElement: Subimos un nivel en el nodo y nos referenciamos al nodo padre.
                             e.target.parentElement.parentElement.parentElement.remove();
 
                             //Mostrar notificacion
@@ -256,15 +270,40 @@ function eliminarContacto(e){ // El parametro "e", nos reportará a que elemento
 //-----------------------------------------------------------------------------------------------------------------------------------
 /* BUSQUEDA DE REGISTROS VIA AJAX */
 
-function buscarContactos(e){  // El parametro "e", nos reportará a que elemento se le dio Click
+function buscarContactos(e){  // El parametro "e", nos reportará a que elemento del Input
+    // RegExp: (Expresion Regular). Es un patron de busqueda que se utilia para reemplazar/replace() o buscar/search() y permite ingresar dos parametros. RegExp(1:PATRON QUE PUEDE SER UN CARACTER O UNA CADENA DE TEXTO, 2: EL MODIFICADOR).
+
+    /* TIPOS DE MODIFICADORES:
+                                g: Realizar una coincidencia global (busque todas las coincidencias en lugar de detenerse después de la primera coincidencia).
+
+                                i: No diferencia entre mayuscula y minuscula
+
+                                m: Realiza una coincidencia multilinea.
+    */
     const expresion = new RegExp(e.target.value, 'i'),
           registros = document.querySelectorAll('tbody tr');
 
+          // Recorremos todos los registros
           registros.forEach(registro => {
-              registro.style.display = 'none';
-            //   console.log(registro.childNodes[1].textContent.replace(/\s/g, " ").search(expresion));
 
-              if(registro.childNodes[1].textContent.replace(/\s/g, " ").search(expresion) != -1 ){
+              // A cada registro que encontremos lo ocultamos              
+              registro.style.display = 'none';
+
+              // registro.childNodes[1] => <td>Nombre</td>
+              // registro.childNodes[1].textContent => Nombre
+
+              //.replace(/\s/g, " ") => Detecta un espacio en blanco y sigue buscando todas las coincidencias
+              //.search(expresion) => Busca y compará los caracteres o cadena de textos existentes
+
+              //registro.childNodes[1].textContent.replace(/\s/g, ' ').search(expresion):
+              
+              //Hace referencia al <td> de campos NOMBRES y solo obtiene el contenido (texto), luego detecta los espacios en blanco y sigue buscando las coincidencias que se le paso como parametro entre todos los <TD>. Por cada elemento que se encuentre se devolvera un valor mayor a "-1" dependiendo de la cantidad de elementos encontrados.
+
+
+            //   console.log(registro.childNodes[1].textContent.replace(/\s/g, ' ').search(expresion));
+
+
+              if(registro.childNodes[1].textContent.replace(/\s/g, ' ').search(expresion) != -1 ){
                   registro.style.display = 'table-row';
               }
 
@@ -283,6 +322,7 @@ function numeroContactos(){
 
     let total = 0;
 
+    // Recorremos todos los <td> y contamos todos aquellos que no contengan Display = NONE 
     totalContactos.forEach(contacto =>{
         if(contacto.style.display === '' || contacto.style.display === 'table-row'){
             total++;

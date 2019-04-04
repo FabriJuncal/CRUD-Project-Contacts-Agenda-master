@@ -13,6 +13,7 @@ if(!$id){
     die('No es válido'); 
 }
 
+// Obtenemos el registro con el ID que pasamos como parametro
 $resultado = obtenerContacto($id);
 
 $contacto = $resultado->fetch_assoc();
