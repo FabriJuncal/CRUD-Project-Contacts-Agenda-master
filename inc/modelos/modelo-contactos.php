@@ -55,7 +55,47 @@ if(isset($_POST['accion'])){
 
         // Con "json_encode" enviamos los datos en formato JSON
         echo json_encode($respuesta);
+    
+    }else if($_POST['accion'] == 'editar'){
+        // Siempre que utilicemos AJAX es recomendable utilizar "echo jsdon_encode()" para saber que estamos retornando
+        // echo json_encode($_POST);    
+
+        // Hacemos la conexion a la base de datos
+        require_once('../funciones/bd.php');
+
+        // Validamos las entradas agregandole un FILTRO DE SANEAMIENTO a cada una
+        $nombre = filter_var($_POST['nombre'], FILTER_SANITIZE_STRING);
+        $empresa = filter_var($_POST['empresa'], FILTER_SANITIZE_STRING);
+        $telefono = filter_var($_POST['telefono'], FILTER_SANITIZE_STRING);
+        $id = filter_var($_POST['id'], FILTER_SANITIZE_NUMBER_INT);
+
+        try {
+            $stmt = $conn->prepare("UPDATE contactos SET nombre = ?, telefono = ?, empresa = ? WHERE id = ?");
+            $stmt->bind_param("sssi", $nombre, $telefono, $empresa, $id);
+            $stmt->execute();
+
+            if($stmt->affected_rows == 1){
+                $respuesta = array(
+                    'respuesta' => 'correcto'
+                );
+            }else{
+                $respuesta = array(
+                    'respuesta' => 'error'
+                );
+            }
+
+            $stmt->close();
+            $conn->close();
+
+
+        } catch (Excepcion $e) {
+            $respuesta = array(
+                'error' => $e->getMessage()
+            );
+        }
     }
+
+    echo json_encode($respuesta);  
 } 
 
 if(isset($_GET['accion'])){

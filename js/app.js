@@ -43,10 +43,15 @@ function leerFormulario(e){
         // console.log(...infoContacto);
 
         if(accion === 'crear'){
-            //Crearemos un nuevo contacto
+            //Creamos un nuevo contacto
             insertarBD(infoContacto);
         }else{
             //Editamos el contacto
+            
+            const idRegistro = document.querySelector('#id').value;
+            infoContacto.append('id', idRegistro);
+            actualizarRegistro(infoContacto);
+
         }
     }
 }
@@ -142,6 +147,48 @@ function insertarBD(datos){
 
 
 }
+
+//-----------------------------------------------------------------------------------------------------------------------------------
+/** MODIFICACION DE REGISTROS VIA AJAX **/
+
+function actualizarRegistro(datos){
+    // Si queremos ver lo que contiene el parametro "datos" no podemos solo utilizar la funcion "console.log()", tenemos que utilizarlo con el Operador de Propagación, o spread operator, se compone del nombre de nuestro array precedido por tres puntos.
+    // console.log(...datos);
+
+    // 1)Llamado a Ajax
+
+    // 2)Crear el objeto
+    xhr = new XMLHttpRequest();
+
+    // 3)Abrir la conexion
+    //POST: Se utiliza cuando se inserta algo a la BASE DE DATOS
+    //GET: Se utiliza cuando se quiere obtener algo que esta en el SERVIDOR    
+    xhr.open('POST', 'inc/modelos/modelo-contactos.php', true);
+
+    // 4)Pasar los datos
+    xhr.onload = function(){
+        if(this.status === 200){
+            const respuesta = JSON.parse(xhr.responseText);
+
+            if(respuesta.respuesta === 'correcto'){
+                // mostrar notificacion
+                mostrarNotificacion('Contacto editado Correctamente', 'correcto');
+            }else{
+                //hubo un error
+                mostrarNotificacion('Hubo un error...', 'error');
+            }
+
+            // Despues de 3 segundos redireccionamos al index.php
+            setTimeout(()=>{
+                window.location.href = 'index.php';
+            },3800);
+        }
+    }
+
+    // 5)Enviar los datos
+    xhr.send(datos);
+}
+
 //-----------------------------------------------------------------------------------------------------------------------------------
 /* ELIMINACION DE REGISTROS VIA AJAX */
 function eliminarContacto(e){ // El parametro "e", nos reportará a que elemento se le dio Click
@@ -175,8 +222,13 @@ function eliminarContacto(e){ // El parametro "e", nos reportará a que elemento
 
                         if(resultado.respuesta == 'correcto'){
                             //Eliminar el registro del DOM
-                            console.log(e.target.parentElement.parentElement.parentElement);
                             e.target.parentElement.parentElement.parentElement.remove();
+
+                            //Mostrar notificacion
+                            mostrarNotificacion('Contacto eliminado', 'correcto')
+                        }else{
+                            //Mostrar notificacion
+                            mostrarNotificacion('Hubo un error.....', 'error')
                         }
                     }
                 }
