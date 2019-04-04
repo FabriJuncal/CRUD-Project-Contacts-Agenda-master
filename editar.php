@@ -16,6 +16,7 @@ if(!$id){
 // Obtenemos el registro con el ID que pasamos como parametro
 $resultado = obtenerContacto($id);
 
+// fetch_assoc: Retorna una matriz de strings asociativa.
 $contacto = $resultado->fetch_assoc();
 ?>
 
